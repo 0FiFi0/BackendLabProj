@@ -11,9 +11,6 @@ namespace Infrastructure.Services
     {
         List<university> GetPaginatedUniversities(int page, int pageSize);
 
-        IEnumerable<university_ranking_year> GetUniversityRankingYearsByCountry(string country);
-
-        Task AddUniversityScore(int universityId, int score, int year, int rankingCriteriaId);
     }
 }
 

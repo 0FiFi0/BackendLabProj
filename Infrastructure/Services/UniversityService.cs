@@ -31,44 +31,6 @@ namespace Infrastructure.Services
             {
                 throw;
             }
-        }
-
-        public IEnumerable<university_ranking_year> GetUniversityRankingYearsByCountry(string country)
-        {
-            try
-            {
-                return _context.university_ranking_year
-                    .Include(ury => ury.university)
-                    .Include(ury => ury.ranking_criteria)
-                    .Include(ury => ury.university.country)
-                    .Where(ury => ury.university.country.country_name.ToLower() == country.ToLower())
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred while fetching university ranking years: {ex.Message}");
-            }
-        }
-        public async Task AddUniversityScore(int universityId, int score, int year, int rankingCriteriaId)
-        {
-            try
-            {
-
-                var newScore = new university_ranking_year
-                {
-                    university_id = universityId,
-                    ranking_criteria_id = rankingCriteriaId,
-                    year = year,
-                    score = score
-                };
-
-                _context.university_ranking_year.Add(newScore);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"An error occurred while adding university score: {ex.Message}");
-            }
-        }
+        }   
     }
 }
