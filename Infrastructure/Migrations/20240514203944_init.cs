@@ -94,6 +94,8 @@ namespace Infrastructure.Migrations
                 name: "university_ranking_year",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     university_id = table.Column<int>(type: "int", nullable: true),
                     ranking_criteria_id = table.Column<int>(type: "int", nullable: true),
                     year = table.Column<int>(type: "int", nullable: true),
@@ -101,6 +103,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_university_ranking_year", x => x.Id);
                     table.ForeignKey(
                         name: "fk_ury_rc",
                         column: x => x.ranking_criteria_id,

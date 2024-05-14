@@ -3,6 +3,7 @@ using Infrastructure.Services;
 using WebApi.Mapper;
 using Infrastructure.Context;
 using Microsoft.AspNetCore.Localization;
+using System.Text.Json.Serialization;
 
 
 namespace UniversitiesApi
@@ -15,7 +16,10 @@ namespace UniversitiesApi
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
             builder.Services.AddAutoMapper(typeof(UniversityProfile));
             builder.Services.AddDbContext<UniversityDbContext>();
             builder.Services.AddScoped<IUniversityService, UniversityService>();

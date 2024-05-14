@@ -94,6 +94,12 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("AppCore.Models.university_ranking_year", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int?>("ranking_criteria_id")
                         .HasColumnType("int");
 
@@ -105,6 +111,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<int?>("year")
                         .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ranking_criteria_id");
 

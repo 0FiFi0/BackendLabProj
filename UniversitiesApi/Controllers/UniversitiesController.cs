@@ -8,6 +8,7 @@ using System.Text.Json;
 using AutoMapper;
 using WebApi.Dto;
 using Infrastructure.Services;
+using System.Data.Entity;
 
 namespace WebApi.Controllers
 {
@@ -20,18 +21,59 @@ namespace WebApi.Controllers
 
         public UniversityController(IUniversityService universityService, IMapper mapper)
         {
-            _universityService = universityService;
-            _mapper = mapper;
+           _universityService = universityService;
+           _mapper = mapper;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<universityDTO>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
+           try
+           {
+               var universities = _universityService.GetPaginatedUniversities(page, pageSize);
+               var universityDTOs = _mapper.Map<IEnumerable<universityDTO>>(universities);
+               return Ok(universityDTOs);
+           }
+            catch (Exception ex)
+            {
+               return StatusCode(500, $"Internal server error: {ex.Message}");
+           }
+        }
+
+
+        [HttpGet("universities")]
+        public ActionResult<IEnumerable<universityscoreDTO>> Get([FromQuery] string country)
+        {
             try
             {
-                var universities = _universityService.GetPaginatedUniversities(page, pageSize);
-                var universityDTOs = _mapper.Map<IEnumerable<universityDTO>>(universities);
-                return Ok(universityDTOs);
+                if (string.IsNullOrEmpty(country))
+                {
+                    return BadRequest("Country parameter is required.");
+                }
+
+                var universities = _universityService.GetUniversityRankingYearsByCountry(country);
+
+                var universityDtos = _mapper.Map<IEnumerable<universityscoreDTO>>(universities);
+
+                return Ok(universityDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("{id}/scores")]
+        public async Task<IActionResult> AddUniversityScore(int id, [FromBody] ScoreDTO model)
+        {
+            try
+            {
+                await _universityService.AddUniversityScore(id, model.Score, model.Year, model.RankingCriteriaId);
+                return Ok("University score added successfully");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -40,4 +82,5 @@ namespace WebApi.Controllers
         }
 
     }
+
 }

@@ -7,9 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppCore.Models;
 
-[Keyless]
 public partial class university_ranking_year
 {
+    [Key]
+    public int Id { get; set; }
     public int? university_id { get; set; }
 
     public int? ranking_criteria_id { get; set; }
