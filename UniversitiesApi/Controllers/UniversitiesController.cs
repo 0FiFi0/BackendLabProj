@@ -68,6 +68,29 @@ namespace WebApi.Controllers
         {
             try
             {
+                // Walidacja punktacji, roku i id kryterium
+                if (model.Score < 0 || model.Score > 100)
+                {
+                    return BadRequest("Score must be between 0 and 100.");
+                }
+
+                if (model.Year <= 0)
+                {
+                    return BadRequest("Year must be a positive integer.");
+                }
+
+                if (model.RankingCriteriaId <= 0)
+                {
+                    return BadRequest("RankingCriteriaId must be a positive integer.");
+                }
+
+                // Sprawdzenie czy istnieje już punktacja dla podanego uniwersytetu, roku i kryterium
+                var existingScore = await _universityService.GetUniversityScore(id, model.Year, model.RankingCriteriaId);
+                if (existingScore != null)
+                {
+                    return BadRequest("University score for the specified year and ranking criteria already exists.");
+                }
+
                 await _universityService.AddUniversityScore(id, model.Score, model.Year, model.RankingCriteriaId);
                 return Ok("University score added successfully");
             }

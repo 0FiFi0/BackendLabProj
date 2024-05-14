@@ -5,6 +5,7 @@ using Infrastructure.Context;
 using AppCore.Models;
 using Microsoft.EntityFrameworkCore;
 using Azure.Core;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
@@ -68,6 +69,22 @@ namespace Infrastructure.Services
             catch (Exception ex)
             {
                 throw new Exception($"An error occurred while adding university score: {ex.Message}");
+            }
+        }
+
+        public async Task<university_ranking_year> GetUniversityScore(int universityId, int year, int rankingCriteriaId)
+        {
+            try
+            {
+                return await _context.university_ranking_year
+                    .FirstOrDefaultAsync(ury =>
+                        ury.university_id == universityId &&
+                        ury.year == year &&
+                        ury.ranking_criteria_id == rankingCriteriaId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred while fetching university score: {ex.Message}");
             }
         }
     }

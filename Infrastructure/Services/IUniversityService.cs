@@ -14,6 +14,8 @@ namespace Infrastructure.Services
         IEnumerable<university_ranking_year> GetUniversityRankingYearsByCountry(string country);
 
         Task AddUniversityScore(int universityId, int score, int year, int rankingCriteriaId);
+
+        Task<university_ranking_year> GetUniversityScore(int universityId, int year, int rankingCriteriaId);
     }
 }
 
