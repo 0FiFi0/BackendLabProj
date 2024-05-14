@@ -17,15 +17,6 @@ namespace WebApi.Mapper
             CreateMap<university, universityDTO>()
                 .ForMember(dest => dest.UniversityName, opt => opt.MapFrom(src => src.university_name))
                 .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.country.country_name));
-
-            CreateMap<university_ranking_year, universityscoreDTO>()
-                .ForMember(dest => dest.UniversityId, opt => opt.MapFrom(src => src.university.id))
-                .ForMember(dest => dest.UniversityName, opt => opt.MapFrom(src => src.university.university_name))
-                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.year))
-                .ForMember(dest => dest.Score, opt => opt.MapFrom(src => src.score))
-                .ForMember(dest => dest.CriteriaName, opt => opt.MapFrom(src => src.ranking_criteria.criteria_name));
-
-            CreateMap<ScoreDTO, university_ranking_year>();
         }
     }
 }

@@ -40,47 +40,6 @@ namespace WebApi.Controllers
            }
         }
 
-
-        [HttpGet("universities")]
-        public ActionResult<IEnumerable<universityscoreDTO>> Get([FromQuery] string country)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(country))
-                {
-                    return BadRequest("Country parameter is required.");
-                }
-
-                var universities = _universityService.GetUniversityRankingYearsByCountry(country);
-
-                var universityDtos = _mapper.Map<IEnumerable<universityscoreDTO>>(universities);
-
-                return Ok(universityDtos);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpPost("{id}/scores")]
-        public async Task<IActionResult> AddUniversityScore(int id, [FromBody] ScoreDTO model)
-        {
-            try
-            {
-                await _universityService.AddUniversityScore(id, model.Score, model.Year, model.RankingCriteriaId);
-                return Ok("University score added successfully");
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
     }
 
 }
