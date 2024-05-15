@@ -11,6 +11,12 @@ namespace Infrastructure.Services
     {
         List<university> GetPaginatedUniversities(int page, int pageSize);
 
+        Task<university_year> GetUniversityData(int id, int year);
+
+        Task AddUniversityScore(int universityId, int score, int year, int rankingCriteriaId);
+
+        Task<university_ranking_year> GetUniversityScore(int universityId, int year, int rankingCriteriaId);
+
     }
 }
 
